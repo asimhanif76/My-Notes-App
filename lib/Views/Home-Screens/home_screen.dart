@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/Controllers/home_page_controller.dart';
 import 'package:notes_app/Utils/app_size.dart';
+import 'package:notes_app/Utils/custom_snack_bar.dart';
 import 'package:notes_app/Views/Home-Screens/write_note_screen.dart';
 import 'package:notes_app/Views/SignIn-SignUp-Screens/sign_in_screen.dart';
 
@@ -124,7 +125,9 @@ class HomeScreen extends StatelessWidget {
                       icon: Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
                         final noteId = homePageController.notes[index]['id'];
-                        homePageController.deleteNote(noteId);
+                        homePageController.deleteNote(noteId, context);
+                        CustomSnackBar.showSuccess(
+                            message: 'Deleted SucessFully', context: context);
 
                         homePageController.notes.removeAt(index);
                       },

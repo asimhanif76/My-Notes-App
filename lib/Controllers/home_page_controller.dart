@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/Models/note_model.dart';
+import 'package:notes_app/Utils/custom_snack_bar.dart';
 
 class HomePageController extends GetxController {
   @override
@@ -55,7 +56,7 @@ class HomePageController extends GetxController {
   // }
 
 
-Future<void> saveNote() async {
+Future<void> saveNote(BuildContext context) async {
   try {
     final noteName = noteNameController.text.trim();
     final noteContent = noteController.text.trim();
@@ -86,6 +87,8 @@ Future<void> saveNote() async {
     fetchNotes();
   } catch (e) {
     print("Error saving data: $e");
+      CustomSnackBar.showError(
+            message: '${e.toString().split(']')[1].trim()}', context: context);
   }
 }
 
@@ -114,7 +117,7 @@ Future<void> saveNote() async {
     }
   }
 
-  Future updateNote(String noteId) async {
+  Future updateNote(String noteId,BuildContext context) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -131,10 +134,12 @@ Future<void> saveNote() async {
       }
     } catch (e) {
       print("Error updating note: $e");
+        CustomSnackBar.showError(
+            message: '${e.toString().split(']')[1].trim()}', context: context);
     }
   }
 
-  Future deleteNote(String noteId) async {
+  Future deleteNote(String noteId,BuildContext context) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -148,6 +153,8 @@ Future<void> saveNote() async {
       }
     } catch (e) {
       print("Error deleting note: $e");
+        CustomSnackBar.showError(
+            message: '${e.toString().split(']')[1].trim()}', context: context);
     }
   }
 }

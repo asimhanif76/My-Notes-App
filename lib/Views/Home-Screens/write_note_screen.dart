@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/Controllers/home_page_controller.dart';
+import 'package:notes_app/Utils/custom_snack_bar.dart';
 import 'package:notes_app/Widgets/my_button.dart';
 
 class WriteNoteScreen extends StatelessWidget {
@@ -75,18 +76,34 @@ class WriteNoteScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   if (homePageController.isNewNote.value) {
-                    homePageController.saveNote();
-                    homePageController.noteNameController.clear();
-                    homePageController.noteController.clear();
-                    Navigator.pop(context);
-                    print('Add New Note');
+                    try {
+                      homePageController.saveNote(context);
+                      homePageController.noteNameController.clear();
+                      homePageController.noteController.clear();
+                      Navigator.pop(context);
+                      CustomSnackBar.showSuccess(
+                          message: 'Note Saved', context: context);
+                      print('Add New Note');
+                    } catch (e) {
+                      CustomSnackBar.showError(
+                          message: '${e.toString().split(']')[1].trim()}',
+                          context: context);
+                    }
                   } else if (homePageController.isNewNote.value == false) {
-                    homePageController
-                        .updateNote(homePageController.notes[index!]['id']);
-                    homePageController.noteNameController.clear();
-                    homePageController.noteController.clear();
-                    Navigator.pop(context);
-                    print('Update Note');
+                    try {
+                      homePageController.updateNote(
+                          homePageController.notes[index!]['id'], context);
+                      homePageController.noteNameController.clear();
+                      homePageController.noteController.clear();
+                      Navigator.pop(context);
+                      CustomSnackBar.showSuccess(
+                          message: 'Secussfully Updated', context: context);
+                      print('Update Note');
+                    } catch (e) {
+                      CustomSnackBar.showError(
+                          message: '${e.toString().split(']')[1].trim()}',
+                          context: context);
+                    }
                   }
                 }),
           ),
